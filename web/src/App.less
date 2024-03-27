@@ -1,0 +1,291 @@
+@import '../node_modules/normalize.css/normalize.css';
+
+/* Constants */
+
+@bottom-space: 1rem;
+@color-blue-1: rgb(176, 231, 255);
+@color-blue-2: rgb(82, 203, 255);
+@color-blue-3: rgb(42, 167, 221);
+@color-blue-4: rgb(27, 143, 192);
+@color-muted: #ccc;
+@color-text: rgb(226 232 240);
+@input-background-muted: @color-muted;
+@input-background: white;
+@input-color-muted: rgb(93, 93, 93);
+@input-color: black;
+@input-padding: 0.5em 1em;
+@input-width: 300px;
+@mobile-width: 600px;
+@radius: 1em;
+@text-size: 1.1rem;
+
+/* Resets */
+
+* {
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+    font-family: system-ui;
+    color: @color-text;
+}
+
+h1, h2, h3, h4, h5 {
+    padding: 0;
+    margin: 0;
+}
+
+/* Components */
+
+body {
+    background: linear-gradient(to bottom, rgb(15 23 42), rgb(36 49 79));
+}
+
+#layout {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 100vh;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    @media (max-width: @mobile-width) {
+        flex-direction: column-reverse;
+    }
+}
+
+header, nav, #page {
+    padding: 1.7rem 2rem;
+    @media (max-width: @mobile-width) {
+        padding: 1.7rem 1.5rem;
+    }
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    > h1 {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: 200;
+        img {
+            height: 2rem;
+            width: 2rem;
+            padding-right: 0.5rem;
+            box-sizing: content-box;
+        }
+    }
+    #btn-menu {
+        display: none;
+    }
+    @media (max-width: @mobile-width) {
+        #btn-menu {
+            display: block;
+        }
+        .network-selector, .btn-connect {
+            display: none;
+        }
+    }
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.1rem;
+    min-width: 200px;
+    user-select: none;
+    a, button, span {
+        display: block;
+        padding: 0.2rem 0 0.2rem 0.6rem;
+        border-style: solid;
+        border-color: transparent;
+        border-left-width: 2px;
+        color: @color-muted;
+        text-align: left;
+        text-decoration: none;
+        &:hover {
+            cursor: pointer;
+            color: @color-blue-2;
+            border-color: @color-blue-2;
+        }
+        &.selected {
+            color: @color-blue-2;
+            border-color: @color-blue-2;
+        }
+    }
+    @media (max-width: @mobile-width) {
+        display: none;
+        &.open {
+            display: flex;
+            align-items: center;
+            a, button, span {
+                border-left-width: 0;
+                border-bottom-width: 2px;
+                padding-left: 0;
+            }
+        }
+    }
+}
+
+.network-selector {
+    text-transform: uppercase;
+    font-weight: 500;
+    position: relative;
+    .network-options {
+        position: absolute;
+        min-width: 100%;
+        background-color: rgb(15 23 42);
+        padding: 0.1rem 0;
+        .network-option .text {
+            padding-top: 0.1rem;
+            padding-bottom: 0.1rem;
+        }
+    }
+    .network-option .text {
+        display: block;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        &:hover {
+            cursor: pointer;
+            color: @color-blue-2;
+        }
+    }
+}
+
+.btn-connect, #btn-menu {
+    font-weight: 500;
+    background-color: transparent;
+    &:hover {
+        cursor: pointer;
+        color: @color-blue-2;
+    }
+}
+
+#page {
+    flex-grow: 1;
+    h1, h2, h3  {
+        padding-bottom: @bottom-space;
+        font-weight: 500;
+    }
+    h3 {
+        font-size: 1.25rem;
+    }
+    p {
+        font-size: @text-size;
+        line-height: 1.5rem;
+        padding-bottom: @bottom-space;
+    }
+    .btn {
+        background-color: @color-blue-4;
+        border-radius: @radius;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: @bottom-space;
+        padding: 0.6em 1em;
+        text-decoration: none;
+        user-select: none;
+        white-space: nowrap;
+        &:hover {
+            background-color: @color-blue-3;
+            cursor: pointer;
+        }
+        &:disabled {
+            background-color: grey;
+            color: @color-muted;
+            cursor: default;
+        }
+    }
+    .txt-btn {
+        color: @color-blue-2;
+        background-color: transparent;
+        padding: 0 0.1em;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+        &:hover {
+            text-decoration: underline;
+        }
+        &:disabled {
+            cursor: default;
+            text-decoration: none;
+            color: @color-muted;
+        }
+    }
+    .btn-group {
+        display: flex;
+        gap: 1rem;
+    }
+
+    input[type=text], textarea {
+        background-color: @input-background;
+        border-radius: @radius;
+        color: @input-color;
+        margin-bottom: @bottom-space;
+        outline: none;
+        padding: @input-padding;
+        width: @input-width;
+        max-width: 100%;
+        &:disabled {
+            background-color: @input-background-muted;
+            color: @input-color-muted;
+        }
+    }
+
+    textarea {
+        width: 100%;
+        resize: vertical;
+        min-height: 5rem;
+    }
+
+    .error-box {
+        margin-bottom: @bottom-space;
+        color: rgb(255, 115, 115);
+        overflow-wrap: anywhere;
+        font-size: @text-size;
+    }
+
+    .dropdown {
+        margin-bottom: @bottom-space;
+        width: @input-width;
+        max-width: 100%;
+        .dropdown-input {
+            margin: 0;
+            &:hover {
+                cursor: pointer;
+                &:disabled {
+                    cursor: default;
+                }
+            }
+        }
+        &.open {
+            .dropdown-input {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+                &:hover {
+                    cursor: default;
+                }
+            }
+        }
+        .dropdown-option {
+            background-color: @input-background;
+            color: @input-color;
+            padding: @input-padding;
+            &:hover {
+                background-color: @color-blue-1;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            &:last-of-type {
+                border-bottom-left-radius: @radius;
+                border-bottom-right-radius: @radius;
+            }
+        }
+    }
+}
