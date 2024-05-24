@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 export const PageHome: React.FC = () => {
     const [worker, setWorker] = useState<Worker | null>(null);
@@ -7,7 +7,7 @@ export const PageHome: React.FC = () => {
     const restartWorker = () => {
         // Check if stop was requested by the user
         if (stopRequested.current) {
-            console.debug('Worker stop requested, not restarting.');
+            console.debug("Worker stop requested, not restarting.");
             return;
         }
 
@@ -17,12 +17,12 @@ export const PageHome: React.FC = () => {
         }
 
         // Create a new worker and set up message handling
-        const newWorker = new Worker(new URL('./grindWorker.ts', import.meta.url), { type: 'module' });
+        const newWorker = new Worker(new URL("./grindWorker.ts", import.meta.url), { type: "module" });
         newWorker.onmessage = (e: MessageEvent) => {
             console.debug(e.data);
         };
-        newWorker.postMessage('start');
-        console.debug('Worker started');
+        newWorker.postMessage("start");
+        console.debug("Worker started");
 
         // Update the state to hold the new worker
         setWorker(newWorker);
@@ -45,7 +45,7 @@ export const PageHome: React.FC = () => {
             stopRequested.current = true; // Set the flag to true as stop is requested by the user
             worker.terminate();
             setWorker(null);
-            console.debug('Worker stopped');
+            console.debug("Worker stopped");
         }
     };
 
@@ -59,10 +59,10 @@ export const PageHome: React.FC = () => {
     }, [worker]);
 
     return (
-        <div id='page-home' className='page'>
-            <div className='btn-group'>
-                <button className='btn' onClick={startGrind} disabled={!!worker}>Start</button>
-                <button className='btn' onClick={stopGrind} disabled={!worker}>Stop</button>
+        <div id="page-home" className="page">
+            <div className="btn-group">
+                <button className="btn" onClick={startGrind} disabled={!!worker}>Start</button>
+                <button className="btn" onClick={stopGrind} disabled={!worker}>Stop</button>
             </div>
         </div>
     );

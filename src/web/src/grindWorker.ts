@@ -1,21 +1,21 @@
-import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
-import { generateMnemonic } from '@scure/bip39';
-import { wordlist } from '@scure/bip39/wordlists/english';
+import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
+import { generateMnemonic } from "@scure/bip39";
+import { wordlist } from "@scure/bip39/wordlists/english";
 
-self.onmessage = async (evt: MessageEvent<string>) => {
+self.onmessage = (evt: MessageEvent<string>) => {
     const msg = evt.data;
-    if (msg === 'start') {
+    if (msg === "start") {
         grind();
     }
 };
 
-const grind = async () => {
+const grind = () => {
     // let count = 0;
     while (true) {
         const phrase = generateMnemonic(wordlist);
         const pair = Ed25519Keypair.deriveKeypair(phrase);
         const address = pair.toSuiAddress();
-        if (address.startsWith('0xfee')) {
+        if (address.startsWith("0xfee")) {
             const secretKey = pair.getSecretKey();
             postMessage({address, secretKey, phrase});
         }

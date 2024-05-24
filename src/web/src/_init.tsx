@@ -1,6 +1,6 @@
-import ReactDOM from 'react-dom/client';
-import { AppWrapRouter } from './App';
+import ReactDOM from "react-dom/client";
+import { AppWrapRouter } from "./App";
 
 ReactDOM
-    .createRoot( document.getElementById('app') as Element )
+    .createRoot( document.getElementById("app") as Element )
     .render(<AppWrapRouter />);
