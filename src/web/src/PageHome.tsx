@@ -1,5 +1,6 @@
+import { shortenSuiAddress } from "@polymedia/suitcase-core";
 import React, { useEffect, useRef, useState } from "react";
-import { AppStartEvent, WorkerEvent } from "./vanityWorker";
+import { AppStartEvent, Keypair, WorkerEvent } from "./vanityWorker";
 
 type WorkerStatus = "stopped" | "running";
 
@@ -11,17 +12,21 @@ export const PageHome: React.FC = () =>
     const [ status, setStatus ] = useState<WorkerStatus>("stopped");
     const [ startsWith, setStartsWith ] = useState<string>("ab");
     const [ endsWith, setEndsWith ] = useState<string>("");
+    const [ keypairs, setKeypairs ] = useState<Keypair[]>([]);
 
     /* Functions */
 
     useEffect(() => {
-        return stopWorker; // clean up when the component unmounts
+        // clean up when the component unmounts
+        return () => {
+            worker.current && stopWorker;
+        };
     }, []);
 
     const handleWorkerEvent = (evt: MessageEvent<WorkerEvent>) => {
         const e = evt.data;
         if (e.msg === "match") {
-            console.log("[app] match:", e.data.address); // TODO show to user
+            setKeypairs(oldMatches => [e.data.pair, ...oldMatches]);
         }
         else if (e.msg === "restart") {
             stopWorker();
@@ -89,6 +94,23 @@ export const PageHome: React.FC = () =>
         <button className="btn" onClick={startWorker} disabled={status !== "stopped"}>Start</button>
         <button className="btn" onClick={stopWorker} disabled={status !== "running"}>Stop</button>
     </div>
+    {keypairs.length > 0 &&
+    <div id="matches">
+        <h2>Matches</h2>
+        {keypairs.map(pair =>
+        <div className="match" key={pair.address}>
+            <div className="short-address">{shortenSuiAddress(
+                pair.address,
+                Math.max(4, startsWith.length),
+                Math.max(4, endsWith.length),
+                undefined,
+                "",
+            )}</div>
+            <div className="address">{pair.address}</div>
+            <div className="secret-key">{pair.secretKey}</div>
+        </div>)}
+    </div>
+    }
     </>;
 };
 

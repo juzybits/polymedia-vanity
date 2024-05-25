@@ -1,4 +1,26 @@
 #config {
     display: flex;
     flex-direction: column;
+    font-size: 1.1rem;
+}
+#matches {
+    .match {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 1rem 0;
+        .short-address {
+            font-size: 1.1rem;
+        }
+        .address {
+            font-size: 0.849rem;
+        }
+        .secret-key {
+            font-size: 0.8rem;
+        }
+        * {
+            font-family: monospace;
+            word-break: break-all;
+        }
+    }
 }

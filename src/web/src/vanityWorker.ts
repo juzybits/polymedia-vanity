@@ -2,6 +2,11 @@ import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
 
 const RESTART_AFTER_COUNT = 5000;
 
+export type Keypair = {
+    address: string;
+    secretKey: string;
+};
+
 export type AppEvent = AppStartEvent;
 export type AppStartEvent = {
     msg: "start";
@@ -9,16 +14,15 @@ export type AppStartEvent = {
         startsWith: string;
         endsWith: string;
     };
-}
+};
 
 export type WorkerEvent = WorkerMatchEvent | WorkerRestartEvent;
 export type WorkerMatchEvent = {
     msg: "match";
     data: {
-        address: string;
-        secretKey: string;
+        pair: Keypair;
     };
-}
+};
 export type WorkerRestartEvent = {
     msg: "restart";
 };
@@ -42,7 +46,7 @@ const run = (startsWith: string, endsWith: string) => {
             const secretKey = pair.getSecretKey();
             const event: WorkerMatchEvent = {
                 msg: "match",
-                data: { address, secretKey },
+                data: { pair: { address, secretKey } },
             };
             postMessage(event);
         }
