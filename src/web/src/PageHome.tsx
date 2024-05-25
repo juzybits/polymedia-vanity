@@ -1,5 +1,5 @@
-import { formatNumber, shortenSuiAddress } from "@polymedia/suitcase-core";
 import React, { useEffect, useRef, useState } from "react";
+import { isHex, shortAddress, shortNumber } from "./utils";
 import { AppStartEvent, Keypair, WorkerEvent } from "./vanityWorker";
 
 type WorkerStatus = "stopped" | "running";
@@ -87,9 +87,6 @@ export const PageHome: React.FC = () =>
     const criteriaLength = startsLength + endsLength;
 
     const searchSpace = Math.pow(16, criteriaLength);
-    const searchSpaceStr = searchSpace < 1_000
-        ? String(searchSpace)
-        : formatNumber(searchSpace, "compact");
 
     /* HTML */
 
@@ -107,17 +104,19 @@ export const PageHome: React.FC = () =>
         <button className="btn" onClick={stopWorker} disabled={status !== "running"}>Stop</button>
     </div>
 
-    {criteriaLength > 0 &&
-    <p>
-        Search space: {searchSpaceStr}
-    </p>
-    }
+    <div className="tight">
+        {criteriaLength > 0 &&
+        <p>
+            Search space: {shortNumber(searchSpace)}
+        </p>
+        }
 
-    {pairCount > 0 &&
-    <p>
-        Pairs generated: {formatNumber(pairCount, "compact")}
-    </p>
+        {pairCount > 0 &&
+        <p>
+            Pairs generated: {shortNumber(pairCount)}
+        </p>
     }
+    </div>
 
     {keypairs.length > 0 &&
     <div id="matches">
@@ -133,19 +132,3 @@ export const PageHome: React.FC = () =>
 
     </>;
 };
-
-const isHex = (str: string) => /^[0-9a-fA-F]*$/.test(str);
-
-const shortAddress = (
-    address: string,
-    startsLength: number,
-    endsLength: number,
-): string => {
-    return shortenSuiAddress(
-        address,
-        Math.max(4, startsLength),
-        Math.max(4, endsLength),
-        undefined,
-        "",
-    );
-}
