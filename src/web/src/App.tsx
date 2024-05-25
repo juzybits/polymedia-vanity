@@ -4,6 +4,7 @@ import { BrowserRouter, Link, Outlet, Route, Routes, useLocation } from "react-r
 import { PageHome } from "./PageHome";
 import { PageNotFound } from "./PageNotFound";
 import "./styles/.shared.app.less";
+import "./styles/App.less";
 
 /* AppWrapRouter */
 

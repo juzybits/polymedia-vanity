@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AppEvent, WorkerEvent } from "./vanityWorker";
+import { AppStartEvent, WorkerEvent } from "./vanityWorker";
 
 type WorkerStatus = "stopped" | "running";
 
@@ -9,6 +9,8 @@ export const PageHome: React.FC = () =>
 
     const worker = useRef<Worker|null>(null);
     const [ status, setStatus ] = useState<WorkerStatus>("stopped");
+    const [ startsWith, setStartsWith ] = useState<string>("ab");
+    const [ endsWith, setEndsWith ] = useState<string>("");
 
     /* Functions */
 
@@ -19,7 +21,7 @@ export const PageHome: React.FC = () =>
     const handleWorkerEvent = (evt: MessageEvent<WorkerEvent>) => {
         const e = evt.data;
         if (e.msg === "match") {
-            console.log("[app] match:", e.data); // TODO show to user
+            console.log("[app] match:", e.data.address); // TODO show to user
         }
         else if (e.msg === "restart") {
             stopWorker();
@@ -42,7 +44,10 @@ export const PageHome: React.FC = () =>
         );
         worker.current.onmessage = handleWorkerEvent;
 
-        const event: AppEvent = { msg: "start" };
+        const event: AppStartEvent = {
+            msg: "start",
+            data: { startsWith, endsWith },
+        };
         worker.current.postMessage(event);
     };
 
@@ -57,12 +62,34 @@ export const PageHome: React.FC = () =>
         setStatus("stopped");
     };
 
+    const onChangeStartsWith = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.currentTarget.value;
+        if (isHex(value)) {
+            setStartsWith(value);
+        }
+    };
+
+    const onChangeEndsWith = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.currentTarget.value;
+        if (isHex(value)) {
+            setEndsWith(value);
+        }
+    };
+
     /* HTML */
 
     return <>
-        <div className="btn-group">
-            <button className="btn" onClick={startWorker} disabled={status !== "stopped"}>Start</button>
-            <button className="btn" onClick={stopWorker} disabled={status !== "running"}>Stop</button>
-        </div>
+    <div id="config">
+        <span>Begins with:</span>
+        <input type="text" value={startsWith} onChange={onChangeStartsWith} />
+        <span>Ends with:</span>
+        <input type="text" value={endsWith} onChange={onChangeEndsWith} />
+    </div>
+    <div className="btn-group">
+        <button className="btn" onClick={startWorker} disabled={status !== "stopped"}>Start</button>
+        <button className="btn" onClick={stopWorker} disabled={status !== "running"}>Stop</button>
+    </div>
     </>;
 };
+
+const isHex = (str: string) => /^[0-9a-fA-F]*$/.test(str);
