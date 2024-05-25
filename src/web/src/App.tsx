@@ -28,6 +28,8 @@ export type AppContext = {
 
 const App: React.FC = () =>
 {
+    /* State */
+
     const inProgress = false;
     const [ showMobileNav, setShowMobileNav ] = useState(false);
 

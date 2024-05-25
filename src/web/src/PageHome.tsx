@@ -1,67 +1,66 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import { AppEvent, WorkerEvent } from "./grindWorker";
 
-export const PageHome: React.FC = () => {
-    const [worker, setWorker] = useState<Worker | null>(null);
-    const stopRequested = useRef(false); // Tracks whether the user requested to stop the worker
+export const PageHome: React.FC = () =>
+{
+    /* State */
 
-    const restartWorker = () => {
-        // Check if stop was requested by the user
-        if (stopRequested.current) {
-            console.debug("Worker stop requested, not restarting.");
+    const worker = useRef<Worker|null>(null);
+
+    /* Functions */
+
+    const handleWorkerEvent = (evt: MessageEvent<WorkerEvent>) => {
+        const e = evt.data;
+        if (e.msg === "match") {
+            console.log("[app] match:", e.data); // TODO show to user
+        }
+        else if (e.msg === "restart") {
+            stopWorker();
+            startWorker();
+        }
+    };
+
+    const startWorker = () => {
+        if (worker.current) {
+            console.warn("[app] worker already running");
             return;
         }
 
-        // Terminate the existing worker if it exists
-        if (worker) {
-            worker.terminate();
-        }
+        console.debug("[app] starting worker");
 
-        // Create a new worker and set up message handling
-        const newWorker = new Worker(new URL("./grindWorker.ts", import.meta.url), { type: "module" });
-        newWorker.onmessage = (e: MessageEvent) => {
-            console.debug(e.data);
-        };
-        newWorker.postMessage("start");
-        console.debug("Worker started");
+        const newWorker = new Worker(
+            new URL("./grindWorker.ts", import.meta.url),
+            { type: "module" },
+        );
+        newWorker.onmessage = handleWorkerEvent;
 
-        // Update the state to hold the new worker
-        setWorker(newWorker);
+        worker.current = newWorker;
 
-        // Automatically stop and restart the worker after its lifetime expires
-        setTimeout(() => {
-            restartWorker(); // Recursively restart the worker
-        }, 10_000);
+        const event: AppEvent = { msg: "start" };
+        newWorker.postMessage(event);
     };
 
-    const startGrind = () => {
-        stopRequested.current = false; // Reset the stop requested flag
-        if (!worker) {
-            restartWorker();
+    const stopWorker = () => {
+        if (!worker.current) {
+            console.warn("[app] worker already stopped");
+            return;
         }
-    };
-
-    const stopGrind = () => {
-        if (worker) {
-            stopRequested.current = true; // Set the flag to true as stop is requested by the user
-            worker.terminate();
-            setWorker(null);
-            console.debug("Worker stopped");
-        }
+        console.debug("[app] stopping worker");
+        worker.current.terminate();
+        worker.current = null;
     };
 
     // Ensure the worker is cleaned up when the component unmounts
     useEffect(() => {
-        return () => {
-            if (worker) {
-                worker.terminate();
-            }
-        };
-    }, [worker]);
+        return stopWorker;
+    }, []);
+
+    /* HTML */
 
     return <>
         <div className="btn-group">
-            <button className="btn" onClick={startGrind} disabled={!!worker}>Start</button>
-            <button className="btn" onClick={stopGrind} disabled={!worker}>Stop</button>
+            <button className="btn" onClick={startWorker}>Start</button>
+            <button className="btn" onClick={stopWorker}>Stop</button>
         </div>
     </>;
 };
