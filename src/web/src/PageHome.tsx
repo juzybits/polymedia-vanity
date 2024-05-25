@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AppEvent, WorkerEvent } from "./grindWorker";
+import { AppEvent, WorkerEvent } from "./vanityWorker";
 
 type WorkerStatus = "stopped" | "running";
 
@@ -11,6 +11,10 @@ export const PageHome: React.FC = () =>
     const [ status, setStatus ] = useState<WorkerStatus>("stopped");
 
     /* Functions */
+
+    useEffect(() => {
+        return stopWorker; // clean up when the component unmounts
+    }, []);
 
     const handleWorkerEvent = (evt: MessageEvent<WorkerEvent>) => {
         const e = evt.data;
@@ -33,7 +37,7 @@ export const PageHome: React.FC = () =>
         console.debug("[app] starting worker");
 
         worker.current =  new Worker(
-            new URL("./grindWorker.ts", import.meta.url),
+            new URL("./vanityWorker.ts", import.meta.url),
             { type: "module" },
         );
         worker.current.onmessage = handleWorkerEvent;
@@ -52,11 +56,6 @@ export const PageHome: React.FC = () =>
         worker.current = null;
         setStatus("stopped");
     };
-
-    // Ensure the worker is cleaned up when the component unmounts
-    useEffect(() => {
-        return stopWorker;
-    }, []);
 
     /* HTML */
 

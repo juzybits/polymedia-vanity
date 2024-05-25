@@ -14,11 +14,11 @@ export type WorkerEvent = {
 self.onmessage = (evt: MessageEvent<AppEvent>) => {
     const e = evt.data;
     if (e.msg === "start") {
-        grind();
+        run();
     }
 };
 
-const grind = () => {
+const run = () => {
     console.debug("[worker] starting");
     let count = 0;
     while (true)
