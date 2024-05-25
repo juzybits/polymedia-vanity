@@ -85,8 +85,7 @@ export const PageHome: React.FC = () =>
     const startsLength = startsWith.length;
     const endsLength = endsWith.length;
     const criteriaLength = startsLength + endsLength;
-
-    const searchSpace = Math.pow(16, criteriaLength);
+    const combinations = Math.pow(16, criteriaLength);
 
     /* HTML */
 
@@ -106,10 +105,10 @@ export const PageHome: React.FC = () =>
         <button className="btn" onClick={stopWorker} disabled={status !== "running"}>Stop</button>
     </div>
 
-    <div className="tight">
+    <div id="info" className="tight">
         {criteriaLength > 0 &&
         <p>
-            Search space: {shortNumber(searchSpace)}
+            Combinations: {shortNumber(combinations)}
         </p>
         }
 
