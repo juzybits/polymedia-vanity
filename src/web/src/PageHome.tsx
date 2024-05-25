@@ -1,11 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AppEvent, WorkerEvent } from "./grindWorker";
+
+type WorkerStatus = "stopped" | "running";
 
 export const PageHome: React.FC = () =>
 {
     /* State */
 
     const worker = useRef<Worker|null>(null);
+    const [ status, setStatus ] = useState<WorkerStatus>("stopped");
 
     /* Functions */
 
@@ -26,18 +29,17 @@ export const PageHome: React.FC = () =>
             return;
         }
 
+        setStatus("running");
         console.debug("[app] starting worker");
 
-        const newWorker = new Worker(
+        worker.current =  new Worker(
             new URL("./grindWorker.ts", import.meta.url),
             { type: "module" },
         );
-        newWorker.onmessage = handleWorkerEvent;
-
-        worker.current = newWorker;
+        worker.current.onmessage = handleWorkerEvent;
 
         const event: AppEvent = { msg: "start" };
-        newWorker.postMessage(event);
+        worker.current.postMessage(event);
     };
 
     const stopWorker = () => {
@@ -48,6 +50,7 @@ export const PageHome: React.FC = () =>
         console.debug("[app] stopping worker");
         worker.current.terminate();
         worker.current = null;
+        setStatus("stopped");
     };
 
     // Ensure the worker is cleaned up when the component unmounts
@@ -59,8 +62,8 @@ export const PageHome: React.FC = () =>
 
     return <>
         <div className="btn-group">
-            <button className="btn" onClick={startWorker}>Start</button>
-            <button className="btn" onClick={stopWorker}>Stop</button>
+            <button className="btn" onClick={startWorker} disabled={status !== "stopped"}>Start</button>
+            <button className="btn" onClick={stopWorker} disabled={status !== "running"}>Stop</button>
         </div>
     </>;
 };
