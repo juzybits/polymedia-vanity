@@ -58,12 +58,10 @@ export const PageHome: React.FC = () => {
         };
     }, [worker]);
 
-    return (
-        <div id="page-home" className="page">
-            <div className="btn-group">
-                <button className="btn" onClick={startGrind} disabled={!!worker}>Start</button>
-                <button className="btn" onClick={stopGrind} disabled={!worker}>Stop</button>
-            </div>
+    return <>
+        <div className="btn-group">
+            <button className="btn" onClick={startGrind} disabled={!!worker}>Start</button>
+            <button className="btn" onClick={stopGrind} disabled={!worker}>Stop</button>
         </div>
-    );
+    </>;
 };
