@@ -1,4 +1,4 @@
-import { shortenSuiAddress } from "@polymedia/suitcase-core";
+import { formatNumber, shortenSuiAddress } from "@polymedia/suitcase-core";
 import React, { useEffect, useRef, useState } from "react";
 import { AppStartEvent, Keypair, WorkerEvent } from "./vanityWorker";
 
@@ -81,19 +81,30 @@ export const PageHome: React.FC = () =>
         }
     };
 
+    const criteriaLength = startsWith.length + endsWith.length;
+    const searchSpace = Math.pow(16, criteriaLength);
+    const searchSpaceStr = searchSpace < 1_000
+        ? String(searchSpace)
+        : formatNumber(searchSpace, "compact");
+
     /* HTML */
 
     return <>
     <div id="config">
-        <span>Begins with:</span>
+        <p>Begins with:</p>
         <input type="text" value={startsWith} onChange={onChangeStartsWith} />
-        <span>Ends with:</span>
+        <p>Ends with:</p>
         <input type="text" value={endsWith} onChange={onChangeEndsWith} />
     </div>
     <div className="btn-group">
         <button className="btn" onClick={startWorker} disabled={status !== "stopped"}>Start</button>
         <button className="btn" onClick={stopWorker} disabled={status !== "running"}>Stop</button>
     </div>
+    {criteriaLength > 0 &&
+    <p>
+        Search space: {searchSpaceStr}
+    </p>
+    }
     {keypairs.length > 0 &&
     <div id="matches">
         <h2>Matches</h2>
