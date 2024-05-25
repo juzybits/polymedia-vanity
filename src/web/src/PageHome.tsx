@@ -92,6 +92,8 @@ export const PageHome: React.FC = () =>
 
     return <>
 
+    <h1 className="rainbow">Sui Vanity Address Generator</h1>
+
     <div id="config">
         <p>Begins with:</p>
         <input type="text" value={startsWith} onChange={onChangeStartsWith} />
@@ -119,10 +121,10 @@ export const PageHome: React.FC = () =>
     </div>
 
     {keypairs.length > 0 &&
-    <div id="matches">
-        <h2>Matches</h2>
+    <div id="pairs">
+        <h2>Keypairs</h2>
         {keypairs.map(pair =>
-        <div className="match" key={pair.address}>
+        <div className="pair" key={pair.address}>
             <div className="short-address">{shortAddress(pair.address, startsLength, endsLength)}</div>
             <div className="address">{pair.address}</div>
             <div className="secret-key">{pair.secretKey}</div>

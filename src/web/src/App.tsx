@@ -1,6 +1,5 @@
 import { LinkExternal } from "@polymedia/suitcase-react";
-import { useState } from "react";
-import { BrowserRouter, Link, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { PageHome } from "./PageHome";
 import { PageNotFound } from "./PageNotFound";
 import "./styles/.shared.app.less";
@@ -32,7 +31,8 @@ const App: React.FC = () =>
     /* State */
 
     const inProgress = false;
-    const [ showMobileNav, setShowMobileNav ] = useState(false);
+    const showMobileNav = false;
+    // const [ showMobileNav, setShowMobileNav ] = useState(false);
 
     const appContext: AppContext = {
         foo: "bar",
@@ -43,15 +43,15 @@ const App: React.FC = () =>
     const Header: React.FC = () =>
     {
         return <header>
-            <Link to="/" onClick={e => { inProgress ? e.preventDefault() : undefined; }}>
+            <LinkExternal href="https://polymedia.app" follow={true}>
                 <h1>
                     <img alt="polymedia" src="https://assets.polymedia.app/img/all/logo-nomargin-transparent-512x512.webp" className="logo" />
-                    Vanity
                 </h1>
-            </Link>
+            </LinkExternal>
         </header>;
     };
 
+    /*
     const Nav: React.FC = () =>
     {
         const closeMobileNav = () => {
@@ -70,7 +70,9 @@ const App: React.FC = () =>
             </Link>
         </nav>;
     };
+    */
 
+    /*
     const BtnMenu: React.FC = () =>
     (
         <button
@@ -81,6 +83,7 @@ const App: React.FC = () =>
             {!showMobileNav ? "MENU" : "CLOSE"}
         </button>
     );
+    */
 
     const Footer: React.FC = () =>
     (
@@ -111,7 +114,7 @@ const App: React.FC = () =>
             <Header />
 
             <div id="nav-and-page">
-                <Nav />
+                {/* <Nav /> */}
 
                 <div id="page">
                     <div id="page-content">
@@ -125,7 +128,7 @@ const App: React.FC = () =>
 
         {/* Floating elements */}
 
-        <BtnMenu />
+        {/* <BtnMenu /> */}
     </div>
     );
 };
