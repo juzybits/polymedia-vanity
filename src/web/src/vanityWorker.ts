@@ -11,7 +11,7 @@ export type Keypair = {
 export type AppEvent = AppStartEvent;
 export type AppStartEvent = {
     msg: "start";
-    startsWith: string;
+    beginsWith: string;
     endsWith: string;
 };
 
@@ -31,11 +31,11 @@ export type WorkerCountUpdateEvent = {
 self.onmessage = (evt: MessageEvent<AppEvent>) => {
     const e = evt.data;
     if (e.msg === "start") {
-        run("0x" + e.startsWith, e.endsWith);
+        run("0x" + e.beginsWith, e.endsWith);
     }
 };
 
-const run = (startsWith: string, endsWith: string) => {
+const run = (beginsWith: string, endsWith: string) => {
     let count = 0;
     while (true)
     {
@@ -43,7 +43,7 @@ const run = (startsWith: string, endsWith: string) => {
         const pair = new Ed25519Keypair();
         const address = pair.toSuiAddress();
 
-        if (address.startsWith(startsWith) && address.endsWith(endsWith)) {
+        if (address.startsWith(beginsWith) && address.endsWith(endsWith)) {
             const secretKey = pair.getSecretKey();
             const event: WorkerMatchEvent = {
                 msg: "match",

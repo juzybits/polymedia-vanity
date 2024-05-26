@@ -10,7 +10,7 @@ export const PageHome: React.FC = () =>
 
     const worker = useRef<Worker|null>(null);
     const [ status, setStatus ] = useState<WorkerStatus>("stopped");
-    const [ startsWith, setStartsWith ] = useState<string>("");
+    const [ beginsWith, setBeginsWith ] = useState<string>("");
     const [ endsWith, setEndsWith ] = useState<string>("");
     const [ keypairs, setKeypairs ] = useState<Keypair[]>([]);
     const [ pairCount, setPairCount ] = useState<number>(0);
@@ -58,7 +58,7 @@ export const PageHome: React.FC = () =>
         );
         worker.current.onmessage = handleWorkerEvent;
 
-        const event: AppStartEvent = { msg: "start", startsWith, endsWith };
+        const event: AppStartEvent = { msg: "start", beginsWith, endsWith };
         worker.current.postMessage(event);
         timeStart.current = performance.now();
     };
@@ -74,10 +74,10 @@ export const PageHome: React.FC = () =>
         setStatus("stopped");
     };
 
-    const onChangeStartsWith = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeBeginsWith = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
         if (isHex(value)) {
-            setStartsWith(value.toLowerCase());
+            setBeginsWith(value.toLowerCase());
         }
     };
 
@@ -88,9 +88,9 @@ export const PageHome: React.FC = () =>
         }
     };
 
-    const startsLength = startsWith.length;
+    const beginsLength = beginsWith.length;
     const endsLength = endsWith.length;
-    const criteriaLength = startsLength + endsLength;
+    const criteriaLength = beginsLength + endsLength;
     const combinations = Math.pow(16, criteriaLength);
 
     /* HTML */
@@ -100,8 +100,8 @@ export const PageHome: React.FC = () =>
     <h1><span className="rainbow">Sui Vanity Address Generator</span></h1>
 
     <div id="config-section">
-        <p>Starts with:</p>
-        <input type="text" value={startsWith} onChange={onChangeStartsWith} maxLength={64} />
+        <p>Begins with:</p>
+        <input type="text" value={beginsWith} onChange={onChangeBeginsWith} maxLength={64} />
 
         <p>Ends with:</p>
         <input type="text" value={endsWith} onChange={onChangeEndsWith} maxLength={64} />
@@ -138,7 +138,7 @@ export const PageHome: React.FC = () =>
         <div id="pairs-list">
             {keypairs.map(pair =>
             <div className="pair" key={pair.address}>
-                <div className="short-address"><span>{shortAddress(pair.address, startsLength, endsLength)}</span></div>
+                <div className="short-address"><span>{shortAddress(pair.address, beginsLength, endsLength)}</span></div>
                 <div className="address text-green">{pair.address}</div>
                 <div className="secret-key text-orange">{pair.secretKey}</div>
             </div>)}
