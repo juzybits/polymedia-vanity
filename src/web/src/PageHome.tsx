@@ -100,11 +100,11 @@ export const PageHome: React.FC = () =>
     <h1><span className="rainbow">Sui Vanity Address Generator</span></h1>
 
     <div id="config-section">
-        <p>Begins with:</p>
-        <input type="text" value={startsWith} onChange={onChangeStartsWith} />
+        <p>Starts with:</p>
+        <input type="text" value={startsWith} onChange={onChangeStartsWith} maxLength={64} />
 
         <p>Ends with:</p>
-        <input type="text" value={endsWith} onChange={onChangeEndsWith} />
+        <input type="text" value={endsWith} onChange={onChangeEndsWith} maxLength={64} />
 
         <div className="btn-group">
             <button className="btn" onClick={startWorker} disabled={status !== "stopped"}>SEARCH</button>
@@ -115,7 +115,7 @@ export const PageHome: React.FC = () =>
     <div id="info-section" className="tight">
         {criteriaLength > 0 &&
         <p>
-            Combinations: <span className="font-mono">{shortNumber(combinations)}</span>
+            Combinations: <span className="font-mono break-all">{shortNumber(combinations)}</span>
         </p>
         }
 
