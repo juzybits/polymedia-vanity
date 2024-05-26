@@ -95,6 +95,9 @@ export const PageHome: React.FC = () =>
 
     /* HTML */
 
+    const disableSearch = status !== "stopped" || (beginsLength === 0 && endsLength === 0);
+    const disableStop = status !== "running";
+
     return <>
 
     <h1><span className="rainbow">Sui Vanity Address Generator</span></h1>
@@ -107,8 +110,8 @@ export const PageHome: React.FC = () =>
         <input type="text" value={endsWith} onChange={onChangeEndsWith} maxLength={64} />
 
         <div className="btn-group">
-            <button className="btn" onClick={startWorker} disabled={status !== "stopped"}>SEARCH</button>
-            <button className="btn" onClick={stopWorker} disabled={status !== "running"}>STOP</button>
+            <button className="btn" onClick={startWorker} disabled={disableSearch}>SEARCH</button>
+            <button className="btn" onClick={stopWorker} disabled={disableStop}>STOP</button>
         </div>
     </div>
 
