@@ -14,6 +14,8 @@ export const PageHome: React.FC = () =>
     const [ endsWith, setEndsWith ] = useState<string>("");
     const [ keypairs, setKeypairs ] = useState<Keypair[]>([]);
     const [ pairCount, setPairCount ] = useState<number>(0);
+    const timeStart = useRef<number>(0);
+    const [ pairsPerSec, setPairsPerSec ] = useState<number>(0);
 
     /* Functions */
 
@@ -30,6 +32,9 @@ export const PageHome: React.FC = () =>
             setKeypairs(oldMatches => [e.pair, ...oldMatches]);
         }
         else if (e.msg === "countUpdate") {
+            const now = performance.now();
+            setPairsPerSec(1000 * e.count / (now - timeStart.current));
+            timeStart.current = now;
             setPairCount(oldCount => oldCount + e.count);
         }
         else if (e.msg === "restart") {
@@ -55,6 +60,7 @@ export const PageHome: React.FC = () =>
 
         const event: AppStartEvent = { msg: "start", startsWith, endsWith };
         worker.current.postMessage(event);
+        timeStart.current = performance.now();
     };
 
     const stopWorker = () => {
@@ -116,7 +122,13 @@ export const PageHome: React.FC = () =>
         <p>
             Pairs generated: {shortNumber(pairCount)}
         </p>
-    }
+        }
+
+        {pairsPerSec > 0 &&
+        <p>
+            Pairs per second: {pairsPerSec.toFixed(0)}
+        </p>
+        }
     </div>
 
     {keypairs.length > 0 &&
