@@ -71,14 +71,14 @@ export const PageHome: React.FC = () =>
     const onChangeStartsWith = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
         if (isHex(value)) {
-            setStartsWith(value);
+            setStartsWith(value.toLowerCase());
         }
     };
 
     const onChangeEndsWith = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
         if (isHex(value)) {
-            setEndsWith(value);
+            setEndsWith(value.toLowerCase());
         }
     };
 
