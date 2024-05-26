@@ -2,37 +2,53 @@ header {
     padding-bottom: 2rem;
 }
 
-#config {
-    display: flex;
-    flex-direction: column;
-    padding-top: 1rem;
+#config-section {
     p {
         padding: 0;
+        font-size: 1.2rem;
+        padding-top: 1rem;
+    }
+    input[type=text] {
+        margin-top: 0.5rem;
+    }
+    .btn-group {
+        padding-top: 0.5rem;
     }
 }
 
-#info {
+#info-section {
     padding: 1rem 0;
 }
 
-#pairs {
+#pairs-section {
+    padding-top: 1rem;
+    #pairs-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding-top: 0.1rem;
+    }
     .pair {
         display: flex;
         flex-direction: column;
         gap: 0.4rem;
-        padding: 1rem 0;
+        * {
+            font-family: monospace;
+            word-break: break-all;
+        }
         .short-address {
-            font-size: 1.1rem;
+            padding-bottom: 0.1rem;
+            span {
+                font-family: system-ui;
+                font-weight: 600;
+                font-size: 1.4rem;
+            }
         }
         .address {
             font-size: 0.849rem;
         }
         .secret-key {
             font-size: 0.8rem;
-        }
-        * {
-            font-family: monospace;
-            word-break: break-all;
         }
     }
 }

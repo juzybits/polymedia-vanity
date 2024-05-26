@@ -10,7 +10,7 @@ export const PageHome: React.FC = () =>
 
     const worker = useRef<Worker|null>(null);
     const [ status, setStatus ] = useState<WorkerStatus>("stopped");
-    const [ startsWith, setStartsWith ] = useState<string>("abc");
+    const [ startsWith, setStartsWith ] = useState<string>("");
     const [ endsWith, setEndsWith ] = useState<string>("");
     const [ keypairs, setKeypairs ] = useState<Keypair[]>([]);
     const [ pairCount, setPairCount ] = useState<number>(0);
@@ -97,49 +97,52 @@ export const PageHome: React.FC = () =>
 
     return <>
 
-    <h1 className="rainbow">Sui Vanity Address Generator</h1>
+    <h1><span className="rainbow">Sui Vanity Address Generator</span></h1>
 
-    <div id="config">
+    <div id="config-section">
         <p>Begins with:</p>
         <input type="text" value={startsWith} onChange={onChangeStartsWith} />
+
         <p>Ends with:</p>
         <input type="text" value={endsWith} onChange={onChangeEndsWith} />
+
+        <div className="btn-group">
+            <button className="btn" onClick={startWorker} disabled={status !== "stopped"}>SEARCH</button>
+            <button className="btn" onClick={stopWorker} disabled={status !== "running"}>STOP</button>
+        </div>
     </div>
 
-    <div className="btn-group">
-        <button className="btn" onClick={startWorker} disabled={status !== "stopped"}>Start</button>
-        <button className="btn" onClick={stopWorker} disabled={status !== "running"}>Stop</button>
-    </div>
-
-    <div id="info" className="tight">
+    <div id="info-section" className="tight">
         {criteriaLength > 0 &&
         <p>
-            Combinations: {shortNumber(combinations)}
+            Combinations: <span className="font-mono">{shortNumber(combinations)}</span>
         </p>
         }
 
         {pairCount > 0 &&
         <p>
-            Pairs generated: {shortNumber(pairCount)}
+            Keypairs generated: <span className="font-mono">{shortNumber(pairCount)}</span>
         </p>
         }
 
         {pairsPerSec > 0 &&
         <p>
-            Pairs per second: {pairsPerSec.toFixed(0)}
+            Keypairs per second: <span className="font-mono">{pairsPerSec.toFixed(0)}</span>
         </p>
         }
     </div>
 
     {keypairs.length > 0 &&
-    <div id="pairs">
-        <h2>Keypairs</h2>
-        {keypairs.map(pair =>
-        <div className="pair" key={pair.address}>
-            <div className="short-address">{shortAddress(pair.address, startsLength, endsLength)}</div>
-            <div className="address">{pair.address}</div>
-            <div className="secret-key">{pair.secretKey}</div>
-        </div>)}
+    <div id="pairs-section">
+        <h1><span className="rainbow">KEYPAIRS</span></h1>
+        <div id="pairs-list">
+            {keypairs.map(pair =>
+            <div className="pair" key={pair.address}>
+                <div className="short-address"><span>{shortAddress(pair.address, startsLength, endsLength)}</span></div>
+                <div className="address text-green">{pair.address}</div>
+                <div className="secret-key text-orange">{pair.secretKey}</div>
+            </div>)}
+        </div>
     </div>
     }
 
