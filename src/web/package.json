@@ -4,7 +4,7 @@
     "name": "@polymedia/vanity-web",
     "author": "@juzybits (https://polymedia.app)",
     "homepage": "https://vanity.polymedia.app",
-    "description": "Generate Sui vanity addresses in your browser",
+    "description": "Sui vanity address generator",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",

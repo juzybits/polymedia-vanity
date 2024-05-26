@@ -1,6 +1,6 @@
 # Polymedia Vanity
 
-Generate Sui vanity addresses in your browser.
+Sui vanity address generator.
 
 ![Polymedia Vanity](https://vanity.polymedia.app/img/open-graph.webp)
 
