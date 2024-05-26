@@ -2,10 +2,11 @@
 
 Generate Sui vanity addresses in your browser.
 
+![Polymedia Vanity](https://vanity.polymedia.app/img/open-graph.webp)
+
 ## Local development
 
 ```
-cd web/
 pnpm install
 pnpm dev
 ```
