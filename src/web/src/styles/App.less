@@ -1,3 +1,5 @@
+@import "./.shared.constants.less";
+
 header {
     padding-bottom: 2rem;
 }
@@ -33,13 +35,13 @@ header {
         flex-direction: column;
         gap: 0.4rem;
         * {
-            font-family: monospace;
+            font-family: @font-mono;
             word-break: break-all;
         }
         .short-address {
             padding-bottom: 0.1rem;
             span {
-                font-family: system-ui;
+                font-family: @font-system;
                 font-weight: 600;
                 font-size: 1.4rem;
             }
