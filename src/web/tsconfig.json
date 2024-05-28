@@ -1,11 +1,11 @@
 {
     "include": [
-        "./src",
-        "./vite.config.ts"
+        "src",
+        "vite.config.ts"
     ],
     "exclude": [
-        "./dist",
-        "./node_modules",
+        "dist",
+        "node_modules"
     ],
     "compilerOptions": {
         /* Language and Environment */

@@ -5,9 +5,9 @@ import { PageNotFound } from "./PageNotFound";
 import "./styles/.shared.app.less";
 import "./styles/App.less";
 
-/* AppWrapRouter */
+/* AppRouter */
 
-export const AppWrapRouter: React.FC = () => {
+export const AppRouter: React.FC = () => {
     return (
     <BrowserRouter>
         <Routes>
