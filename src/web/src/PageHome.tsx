@@ -154,7 +154,9 @@ export const PageHome: React.FC = () =>
     }
 
     <div className="section">
-        <h2><span className="rainbow">ABOUT</span></h2>
+        <h2 style={{padding: "0"}}>
+            <span className="rainbow">ABOUT</span>
+        </h2>
         <div className="tight">
             <p>▸ Generate memorable Sui addresses like 0xbabe…, 0xcafe…, 0xbeef… etc.</p>
             <p>▸ Sui addresses can only use hexadecimal characters: 0-9 A B C D E F.</p>
