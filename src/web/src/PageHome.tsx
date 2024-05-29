@@ -97,10 +97,13 @@ export const PageHome: React.FC = () =>
 
     const disableSearch = status !== "stopped" || (beginsLength === 0 && endsLength === 0);
     const disableStop = status !== "running";
+    const showInfoSection = (criteriaLength + pairCount + pairsPerSec) > 0;
 
     return <>
 
-    <h1><span className="rainbow">Sui Vanity Address Generator</span></h1>
+    <h1 style={{padding: "0"}}>
+        <span className="rainbow">Sui Vanity Address Generator</span>
+    </h1>
 
     <div id="config-section">
         <p>Begins with:</p>
@@ -115,7 +118,8 @@ export const PageHome: React.FC = () =>
         </div>
     </div>
 
-    <div id="info-section" className="tight">
+    {showInfoSection &&
+    <div id="info-section">
         {criteriaLength > 0 &&
         <p>
             Combinations: <span className="font-mono break-all">{shortNumber(combinations)}</span>
@@ -133,7 +137,7 @@ export const PageHome: React.FC = () =>
             Keypairs per second: <span className="font-mono">{pairsPerSec.toFixed(0)}</span>
         </p>
         }
-    </div>
+    </div>}
 
     {keypairs.length > 0 &&
     <div id="pairs-section">
@@ -148,6 +152,14 @@ export const PageHome: React.FC = () =>
         </div>
     </div>
     }
+
+    <div className="section">
+        <h2><span className="rainbow">ABOUT</span></h2>
+        <div className="tight">
+            <p>▸ Generate memorable Sui addresses like 0xbabe…, 0xcafe…, 0xbeef… etc.</p>
+            <p>▸ Sui addresses can only use hexadecimal characters: 0-9 A B C D E F.</p>
+        </div>
+    </div>
 
     </>;
 };
