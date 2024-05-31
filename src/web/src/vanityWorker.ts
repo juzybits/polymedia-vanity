@@ -1,4 +1,4 @@
-import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
+import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 
 const RESTART_AFTER_COUNT = 5000;
 const UPDATE_AFTER_COUNT = 100;
